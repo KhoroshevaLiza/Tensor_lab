@@ -1,0 +1,161 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="Cache-Control" content="no-cache">
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+    <title>Фотопробег.рф - Конкурс фотографий</title>
+    <script src="js/react.development.js"></script>
+    <script src="js/react-dom.development.js"></script>
+    <script src="js/babel.min.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+
+    const myFeed = [
+        {
+            id: 1,
+            name: 'Виталик',
+            text: 'Виталик-студент',
+            theme_name: 'Студенчество Виталика',
+            photo: '1.jpg',
+            author: 'admin',
+            publish_time: '2017-04-02T17:00:00'
+        },
+        {
+            id: 2,
+            name: 'Виталик-2',
+            text: 'Виталик-студент',
+            theme_name: 'Студенчество Виталика',
+            photo: '2.jpg',
+            author: 'admin',
+            publish_time: '2019-01-25T23:00:00'
+        },
+        {
+            id: 3,
+            name: 'Виталик-3',
+            text: 'На взлёт',
+            theme_name: 'Студенчество Виталика',
+            photo: '3.jpg',
+            author: 'admin',
+            publish_time: '2016-02-13T13:00:00'
+        }
+    ];
+
+    class Article extends React.Component {
+        state = {
+            visible: false,
+        }
+        handleReadMoreClck = (e) => {
+            e.preventDefault()
+            this.setState({ visible: true})
+        }
+        handleDelMoreClck = (e) => {
+            e.preventDefault()
+            alert('Удалили))')
+        }
+        waitupdate = (e) => {
+            e.preventDefault()
+            alert('Будет доступно в новой версии: вывод публикаций по автору и по теме')
+        }
+        render() {
+            const { id, name, text, theme_name, photo, author, publish_time } = this.props.data
+            const { visible } = this.state
+            return (
+                <div className='article'>
+                    <img className='post__image' src={photo} alt="" />
+                    <p className='post__author' onClick={this.waitupdate}>Автор: {author}</p>
+                    <p className='post__text'>Название: {name}</p>
+                    <p className='post__theme' onClick={this.waitupdate}>Тема: {theme_name}</p>
+                    <p className='post__big-text'>Описание: {text}</p>
+                    <p className='post__time'>Дата публикации: {publish_time}</p>
+                    {
+                        !visible && <button className='reg__btn' onClick={this.handleReadMoreClck}> Удалить </button>
+                    }
+                    {
+                        visible && <div><input type='text' class='login' placeholder='Ваш логин'/>
+                        <input class='password' placeholder='Ваш пароль' ></input>
+                        <button className='reg__btn' onClick={this.handleDelMoreClck}> Подтвердить и Удалить </button></div>
+                    }
+                </div>
+                )
+        }
+
+    }
+    
+    class Post extends React.Component {
+        renderPosts = () => {
+            const { data } = this.props
+            let postsTemplate = null
+
+            if (data.length) {
+                postsTemplate = data.map(function(item) {
+                    return <Article key={item.id} data={item}/>
+                })
+            }
+            else {
+                postsTemplate = <p>К сожалению, публикаций нет</p>
+            }
+
+            return postsTemplate
+        }
+        render() {
+            const { data } = this.props
+
+            return (
+                <div className='ppost'>
+                    {this.renderPosts()}
+                    {
+                        data.length ? <strong className={'posts__count'}>Всего публикаций: {data.length}</strong> : null
+                    }
+                </div>
+            );
+        }
+    }
+
+    class App extends React.Component {
+        state = {
+            posts: myFeed,
+        }
+
+        render() {
+            return (
+                <React.Fragment>
+                    <Head />
+                    <Post data={this.state.posts}/>
+                </React.Fragment>
+            )
+        }
+    }
+
+    const Head = () => {
+        return (
+            <div className="headler" id="haa">
+                <h1>Конкурс Фотопробег.рф 2020</h1>
+                <LinkButtons />
+                <p className="r">Работы участников конкурса</p>
+            </div>
+        );
+    }
+
+    class LinkButtons extends React.Component {
+        render() {
+        return (
+            <div className="link_button">
+                <a className='reg__btn' href="/register">Зарегистрироваться</a>
+                <a className='reg__btn' href="/upload">Отправить фотографию</a>
+            </div>
+        )
+        }
+    }
+
+    ReactDOM.render(
+        <App />,
+        document.getElementById('root')
+    );
+
+    </script>
+
+</body>
+</html>

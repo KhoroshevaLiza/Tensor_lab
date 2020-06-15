@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="Cache-Control" content="no-cache">
+	<link rel="stylesheet" type="text/css" href="css/form.css">
+    <title>Фотопробег.рф - Конкурс фотографий</title>
+    <script src="js/react.development.js"></script>
+    <script src="js/react-dom.development.js"></script>
+    <script src="js/babel.min.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+
+    class Register extends React.Component {
+        onBtnClickHandler = (e) => {
+            e.preventDefault()
+            //Не завершено
+            url = '/api/upload'
+            data = {login: "", password: ""}
+            try {
+                const response = fetch(url, {
+                    method: 'POST',
+                    body: JSON.stringify(data),
+                    headers: {
+                        'Content-Type': 'application/json' 
+                    }
+                })
+                const json = response.json();
+                console.log('Успех!');
+            }
+            catch (error) {
+                console.error('Error!:', error);
+            }
+        }
+
+        render() {
+            return (
+                <form className='reg'>
+                <input
+                type='text'
+                className='login'
+                placeholder='Ваш логин'
+                />
+                <input
+                className='password'
+                placeholder='Ваш пароль'
+                ></input>
+                <input
+                type='text'
+                className='txt'
+                placeholder='Название'
+                />
+                <input
+                className='txt'
+                placeholder='Тема'
+                ></input>
+                <input
+                type='text'
+                className='txt'
+                placeholder='Описание'
+                />
+                <input
+                className='txt'
+                placeholder='Ссылка на файл'
+                ></input>
+                <button
+                className='reg__btn'
+                onClick={this.onBtnClickHandler}>
+                Отправить работу
+                </button>
+                </form>
+            )
+        }
+    }
+
+    ReactDOM.render(
+        <Register />,
+    document.getElementById('root')
+    );
+    </script>
+</body>
+</html>
